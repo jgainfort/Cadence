@@ -13,10 +13,14 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var auth = SPTAuth()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        auth.redirectURL = URL(string: "Cadence://returnAfterLogin")
+        auth.sessionUserDefaultsKey = "CadenceSpotifySession"
+
         return true
     }
 
@@ -42,6 +46,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
+    }
+
+    // MARK: - Spotify
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        // Called when user signs into spotify. Session data saved into user defaults,
+        // then notification posted to call updateAfterFirstLogin in ViewController.swift.
+        // Modeled off recommended auth flow suggested by Spotify documentation
+
+        if auth.canHandle(auth.redirectURL) {
+            auth.handleAuthCallback(withTriggeredAuthURL: url, callback: { (error, session) in
+                if error != nil {
+                    print("Spotify auth callback error")
+                }
+
+                let userDefaults = UserDefaults.standard
+                let sessionData = NSKeyedArchiver.archivedData(withRootObject: session)
+                print(sessionData)
+
+                userDefaults.set(sessionData, forKey: "CadenceSpotifySession")
+                userDefaults.synchronize()
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "loginSuccessfull"), object: nil)
+            })
+            return true
+        }
+        return false
     }
 
     // MARK: - Core Data stack

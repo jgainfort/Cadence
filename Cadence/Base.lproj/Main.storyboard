@@ -24,6 +24,14 @@
                                     <segue destination="JQj-Ed-ygb" kind="embed" id="SAm-kF-Clx"/>
                                 </connections>
                             </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c9M-WC-IG9">
+                                <rect key="frame" x="282" y="92" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="spotify-icon"/>
+                                <connections>
+                                    <action selector="spotifyLoginBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tdl-e4-2Xi"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -34,6 +42,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="spotifyBtn" destination="c9M-WC-IG9" id="V7h-rr-zdv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -48,4 +59,7 @@
             <point key="canvasLocation" x="140" y="608"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="spotify-icon" width="236" height="236"/>
+    </resources>
 </document>
